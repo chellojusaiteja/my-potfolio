@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chelloju Saiteja Portfolio — Demo</title>
+
+  <!-- Minimal styles for demo -->
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f6f7fb; color:#222; }
+    .hero { display:flex; gap:30px; align-items:center; padding:40px; max-width:1000px; margin:40px auto; }
+    .hero-left { flex:1; }
+    .photo-circle { width:190px; height:190px; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,.12); background:#fff; }
+    .photo-circle img { width:100%; height:100%; object-fit:cover; display:block; cursor:pointer; }
+
+    /* modal */
+    .modal { display:none; position:fixed; z-index:9999; inset:0; background:rgba(0,0,0,.85); padding-top:60px; }
+    .modal-content { display:block; margin:0 auto; max-width:90%; max-height:80vh; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,.6); }
+    .close { position:fixed; top:22px; right:30px; font-size:40px; color:#fff; cursor:pointer; user-select:none; }
+
+    /* small responsiveness */
+    @media (max-width:600px){
+      .hero { flex-direction:column; padding:20px; }
+      .photo-circle { width:140px; height:140px; }
+    }
+
+    /* resume button (example) */
+    .btn { display:inline-block; margin-top:12px; padding:10px 16px; background:#5a4ce6; color:#fff; border-radius:8px; text-decoration:none; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-left">
+      <h1>Hi, I'm <span style="color:#5a4ce6">SaiTeja Chelloju</span></h1>
+      <p>Final Year Communication Engineering Student — passionate about Java and web development.</p>
+      <a class="btn" href="assets/saiteja.pdf" target="_blank">RESUME</a>
+    </div>
+
+    <div class="hero-right">
+      <div class="photo-circle">
+        <!-- IMPORTANT: ID must be exactly profilePhoto -->
+        <!-- Use forward slashes in path: assets/your-image.png -->
+        <img id="profilePhoto" src="assets/Gemini_Generated_Image_ap50f8ap50f8ap50.png" alt="Profile Photo">
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal HTML (must be present in DOM) -->
+  <div id="popupModal" class="modal" aria-hidden="true">
+    <span class="close" id="modalClose">&times;</span>
+    <img class="modal-content" id="popupImage" alt="Enlarged profile">
+  </div>
+
+  <!-- Inline JS to avoid timing issues -->
+  <script>
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.getElementById('popupModal');
+      const profileImg = document.getElementById('profilePhoto');
+      const modalImg = document.getElementById('popupImage');
+      const closeBtn = document.getElementById('modalClose');
+
+      if (!profileImg) {
+        console.error('profilePhoto element not found');
+        return;
+      }
+
+      // When profile image clicked -> open modal
+      profileImg.addEventListener('click', function () {
+        modalImg.src = this.src;
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
+      });
+
+      // Close button
+      closeBtn.addEventListener('click', function () {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        modalImg.src = '';
+      });
+
+      // Click outside image closes modal
+      modal.addEventListener('click', function (e) {
+        // if clicked the modal background (not the image)
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden', 'true');
+          modalImg.src = '';
+        }
+      });
+
+      // Escape key closes modal
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden', 'true');
+          modalImg.src = '';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
